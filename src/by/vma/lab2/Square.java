@@ -17,7 +17,7 @@ public class Square {
             b.fillDefault();
             b = (a.transpose()).mul(b);
             a = (a.transpose()).mul(a);
-            s = fillS();
+            fillS();
             x = squareRootMethod();
             System.out.println("X: ");
             x.print(false);
@@ -33,7 +33,7 @@ public class Square {
 
     private static double determinant() {
         double mul = 1;
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             mul *= Math.pow(s.matrix[i][i], 2);
         }
         return mul;
@@ -45,14 +45,14 @@ public class Square {
         double sum;
         for (int i = 0; i < n; i++) {
             sum = 0;
-            for (int k = 0; k < i - 1; k++) {
+            for (int k = 0; k < i; k++) {
                 sum += s.matrix[k][i] * y.vector[k];
             }
             y.vector[i] = (b.vector[i] - sum) / s.matrix[i][i];
         }
         for (int i = n - 1; i >= 0; i--) {
             sum = 0;
-            for(int k = i + 1; k < n; k++) {
+            for (int k = i + 1; k < n; k++) {
                 sum += s.matrix[i][k] * result.vector[k];
             }
             result.vector[i] = (y.vector[i] - sum) / s.matrix[i][i];
@@ -60,23 +60,22 @@ public class Square {
         return result;
     }
 
-    private static Matrix fillS() throws Exception {
-        Matrix result = new Matrix(n, n);
+    private static void fillS() throws Exception {
+        s = new Matrix(n, n);
         double sum;
         for (int i = 0; i < n; i++) {
             sum = 0;
-            for (int k = 0; k < i - 1; k++) {
-                sum += Math.pow(result.matrix[k][i], 2);
+            for (int k = 0; k < i; k++) {
+                sum += Math.pow(s.matrix[k][i], 2);
             }
-            result.matrix[i][i] = Math.sqrt(a.matrix[i][i] - sum);
+            s.matrix[i][i] = Math.sqrt(Math.abs(a.matrix[i][i] - sum));
             for (int j = i + 1; j < n; j++) {
                 sum = 0;
-                for (int k = 0; k < i - 1; k++) {
-                    sum += result.matrix[k][i] * result.matrix[k][j];
+                for (int k = 0; k < i; k++) {
+                    sum += s.matrix[k][i] * s.matrix[k][j];
                 }
-                result.matrix[i][j] = (a.matrix[i][j] - sum) / result.matrix[i][i];
+                s.matrix[i][j] = (a.matrix[i][j] - sum) / s.matrix[i][i];
             }
         }
-        return result;
     }
 }
